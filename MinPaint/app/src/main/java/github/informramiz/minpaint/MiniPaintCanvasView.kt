@@ -1,10 +1,7 @@
 package github.informramiz.minpaint
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -59,6 +56,7 @@ class MiniPaintCanvasView(context: Context) : View(context) {
     private var currentEventStartY = 0f
     //define touch tolerance before the motion can be considered as drawing
     private val touchTolerance = ViewConfiguration.get(context).scaledTouchSlop
+    private lateinit var frame: Rect
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -71,6 +69,9 @@ class MiniPaintCanvasView(context: Context) : View(context) {
         canvasBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         extraCanvas = Canvas(canvasBitmap)
         extraCanvas.drawColor(backgroundColor)
+
+        val margin = 40
+        frame = Rect(margin, margin, width - margin, height - margin)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -78,6 +79,8 @@ class MiniPaintCanvasView(context: Context) : View(context) {
         //supply our cache bitmap to system canvas, set pain param to null, we will come back to it
         //later
         canvas.drawBitmap(canvasBitmap, 0f, 0f, null)
+        //draw a frame around the canvas
+        canvas.drawRect(frame, paint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
