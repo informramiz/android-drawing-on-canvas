@@ -110,7 +110,7 @@ class MiniPaintCanvasView(context: Context) : View(context) {
         //check if it is a valid drawing command
         if (dx >= touchTolerance && dy >= touchTolerance) {
             //this is a valid drawing command so store it inside the path
-            //quadTo(...) draws more smooth line with rounded ends
+            //quadTo(...) draws smooth arcs and that is what we are interested in
             path.quadTo(currentEventStartX, currentEventStartY,
                 (currentEventStartX + motionTouchEventX) / 2, (currentEventStartY + motionTouchEventY) / 2)
             //draw the path to cache canvas which in turn will draw it on the cache bitmap
